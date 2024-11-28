@@ -1,7 +1,7 @@
 class FootballAPI {
     constructor() {
-        this.API_KEY = '5df961b9d09f13bfc368857cd25d443e'; // Replace with your actual API key
-        this.BASE_URL = 'https://v3.football-api.com/';
+        this.API_KEY = '5df961b9d09f13bfc368857cd25d443e'; 
+        this.BASE_URL = 'http://api.football-data.org/v4/';
         this.cache = new Map();
         
         // Configure headers for API request
@@ -36,7 +36,7 @@ class FootballAPI {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-
+            // console.log(response)
             const data = await response.json();
 
             // Store in cache
@@ -56,6 +56,17 @@ class FootballAPI {
     async getLiveMatches(leagueId) {
         return this.cachedFetch('fixtures/live', { league: leagueId });
     }
+    async getTodaysMatches(leagueId) {
+        return this.cachedFetch(`competitions/${leagueId}/matches`, { dateFrom: new Date().getDate(), dateTo: new Date().getDate()});
+    }
+
+    async getUpcomingMatches(leagueId) {
+        return this.cachedFetch(`competitions/${leagueId}/matches`, { dateFrom: new Date().getDate() });
+    }
+
+    async getTeamsMatches( teamId) {
+        return this.cachedFetch(`teams/${teamId}/matches`, { dateFrom: new Date().getDate() });
+    }
 
     // Get team statistics
     async getTeamStatistics(teamId, seasonYear) {
@@ -66,14 +77,14 @@ class FootballAPI {
     }
 
     // Get upcoming matches
-    async getUpcomingMatches(leagueId) {
-        const currentDate = new Date().toISOString().split('T')[0];
-        return this.cachedFetch('fixtures', { 
-            league: leagueId, 
-            from: currentDate,
-            status: 'NS' // Not Started matches
-        });
-    }
+    // async getUpcomingMatches(leagueId) {
+    //     const currentDate = new Date().toISOString().split('T')[0];
+    //     return this.cachedFetch('fixtures', { 
+    //         league: leagueId, 
+    //         from: currentDate,
+    //         status: 'NS' // Not Started matches
+    //     });
+    // }
 
     // Search teams
     async searchTeams(query) {
@@ -91,3 +102,4 @@ class FootballAPI {
 
 // Instantiate the API class
 const footballAPI = new FootballAPI();
+export default footballAPI;
