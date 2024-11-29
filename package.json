@@ -1,0 +1,19 @@
+{
+  "name": "sportfusion",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "birasa",
+  "license": "MIT",
+  "description": "sports",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "cors-anywhere": "^0.4.4",
+    "express": "^4.21.1",
+    "node-fetch": "^2.7.0"
+  }
+}

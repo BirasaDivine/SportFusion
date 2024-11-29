@@ -1,20 +1,18 @@
 class FootballAPI {
     constructor() {
         this.API_KEY = '2f648a8656184d4e867e5d8152a9427f'; 
-        this.BASE_URL = 'https://api.football-data.org/v4/';
+        this.BASE_URL = 'http://localhost:5000/football-api'; // Update base URL for new endpoint
         this.cache = new Map();
         
         // Configure headers for API request
         this.headers = {
-            'x-rapidapi-host': 'v3.football-api.com',
             'x-auth-token': this.API_KEY,
-            'Content-Type': 'application/json'
         };
     }
 
     // Cached fetch with error handling
-    async cachedFetch(endpoint, params = {}) {
-        const cacheKey = JSON.stringify({ endpoint, params });
+    async cachedFetch(endpoint) {
+        const cacheKey = endpoint;
         
         // Check cache first
         if (this.cache.has(cacheKey)) {
@@ -25,9 +23,7 @@ class FootballAPI {
         }
 
         try {
-            const queryString = new URLSearchParams(params).toString();
-            const url = `${this.BASE_URL}${endpoint}?${queryString}`;
-
+            const url = `${this.BASE_URL}${endpoint}`;
             const response = await fetch(url, {
                 method: 'GET',
                 headers: this.headers
@@ -36,7 +32,7 @@ class FootballAPI {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            // console.log(response)
+
             const data = await response.json();
 
             // Store in cache
@@ -52,55 +48,45 @@ class FootballAPI {
         }
     }
 
-    // Get live matches
+    // Fetch live matches for a specific league
     async getLiveMatches(leagueId) {
-        return this.cachedFetch('fixtures/live', { league: leagueId });
-    }
-    async getTodaysMatches(leagueId) {
-        return this.cachedFetch(`competitions/${leagueId}/matches`, { dateFrom: new Date().getDate(), dateTo: new Date().getDate()});
+        return this.cachedFetch(`/competitions/${leagueId}/matches`);
     }
 
-    async getAllMatches() {
-        return this.cachedFetch(`competitions/${leagueId}/matches`);
+    // Fetch league ID (simplified since it's directly in the URL)
+    async getLeagueId(leagueName) {
+        return this.cachedFetch(`/competitions/${leagueName}`);
     }
 
+    // Fetch matches for a specific league
     async getUpcomingMatches(leagueId) {
-        return this.cachedFetch(`competitions/${leagueId}/matches`);
+        try {
+        const data = await fetch(`http://localhost:5000/football-api/competitions/${leagueId}/matches`, {
+            method: 'GET',
+            headers: {
+                'x-auth-token': '2f648a8656184d4e867e5d8152a9427f',
+            }
+        })
+        return data.json();
+    }
+    catch (error) {
+        console.error('Error fetching matches:', error);
+    }
     }
 
-    async getTeamsMatches( teamId) {
-        return this.cachedFetch(`teams/${teamId}/matches`, { dateFrom: new Date().getDate() });
-    }
-
-    // Get team statistics
+    // Get team statistics (optional, implement if needed)
     async getTeamStatistics(teamId, seasonYear) {
-        return this.cachedFetch('teams/statistics', { 
-            team: teamId, 
-            season: seasonYear 
-        });
+        return this.cachedFetch(`/teams/statistics?team=${teamId}&season=${seasonYear}`);
     }
 
-    // Get upcoming matches
-    // async getUpcomingMatches(leagueId) {
-    //     const currentDate = new Date().toISOString().split('T')[0];
-    //     return this.cachedFetch('fixtures', { 
-    //         league: leagueId, 
-    //         from: currentDate,
-    //         status: 'NS' // Not Started matches
-    //     });
-    // }
-
-    // Search teams
+    // Search teams (optional, implement if needed)
     async searchTeams(query) {
-        return this.cachedFetch('teams', { search: query });
+        return this.cachedFetch(`/teams?search=${query}`);
     }
 
-    // Get league standings
+    // Get league standings (optional, implement if needed)
     async getLeagueStandings(leagueId, seasonYear) {
-        return this.cachedFetch('standings', { 
-            league: leagueId, 
-            season: seasonYear 
-        });
+        return this.cachedFetch(`/standings?league=${leagueId}&season=${seasonYear}`);
     }
 }
 
@@ -113,6 +99,13 @@ class SportsDashboard {
         this.BASE_URL = 'https://cors-anywhere.herokuapp.com/https://api.football-data.org/v4';
         this.initEventListeners();
         this.loadFavorites();
+        this.leagues = {
+            'PL': 'Premier League',
+            'BL1': 'Bundesliga',
+            'PD': 'La Liga',
+            'SA': 'Serie A',
+            'FL1': 'Ligue 1'
+        }
     }
 
     initEventListeners() {
@@ -140,9 +133,12 @@ class SportsDashboard {
 
     async fetchMatches(competition = 'PL') {
         try {
-            const data = await footballAPI.getUpcomingMatches(2021);
-
-            this.displayMatches(data.matches);
+            let allMatches = [];
+            Object.keys(this.leagues).forEach(async (key) => {
+                const data = await footballAPI.getUpcomingMatches(key);
+                this.displayMatches(data.matches);
+            }
+            );
         } catch (error) {
             console.error('Error fetching matches:', error);
         }
@@ -151,6 +147,8 @@ class SportsDashboard {
     displayMatches(matches) {
         const container = document.getElementById('matchesContainer');
         container.innerHTML = '';
+
+        console.log(matches[0], matches[1])
 
         matches.forEach(match => {
             const matchCard = document.createElement('div');
