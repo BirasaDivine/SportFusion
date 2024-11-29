@@ -170,8 +170,8 @@ class SportsDashboard {
                 <p>Competition: ${match.competition.name}</p>
                 <p>Date: ${new Date(match.utcDate).toLocaleString()}</p>
                 <p>Status: ${match.status}</p>
-                ${match.score.fullTime ? `<p>Score: ${match.score.fullTime.home} - ${match.score.fullTime.away}</p>` : ''}
-                <button class="favorite-btn" data-match-id="${match.id}">Add to Favorites</button>
+                
+                <button class="favorite-btn w-full" data-match-id="${match.id}">${match.score.fullTime ? `Score: ${match.score.fullTime.home} - ${match.score.fullTime.away}` : ''}</button>
             `;
         
             
