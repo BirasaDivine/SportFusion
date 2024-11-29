@@ -160,9 +160,10 @@ class SportsDashboard {
                 <p>Competition: ${match.competition.name}</p>
                 <p>Date: ${new Date(match.utcDate).toLocaleString()}</p>
                 <p>Status: ${match.status}</p>
-                ${match.score.fullTime ? `<p>Score: ${match.score.fullTime.homeTeam} - ${match.score.fullTime.awayTeam}</p>` : ''}
+                ${match.score.fullTime ? `<p>Score: ${match.score.fullTime.home} - ${match.score.fullTime.away}</p>` : ''}
                 <button class="favorite-btn" data-match-id="${match.id}">Add to Favorites</button>
             `;
+        
             
             matchCard.querySelector('.favorite-btn').addEventListener('click', this.toggleFavorite.bind(this));
             
