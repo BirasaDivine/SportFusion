@@ -1,9 +1,7 @@
-// import express from 'express';
-// import cors from 'cors';
-// import fetch from 'node-fetch'; // Importing fetch from node-fetch v3.x (ESM)
-const express = require('express');
-const cors = require('cors');
-const fetch = require('node-fetch');
+import express from 'express';
+import cors from 'cors';
+import fetch from 'node-fetch'; // Importing fetch from node-fetch v3.x (ESM)
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
