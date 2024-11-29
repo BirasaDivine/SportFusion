@@ -134,15 +134,27 @@ class SportsDashboard {
     async fetchMatches(competition = 'PL') {
         try {
             let allMatches = [];
-            Object.keys(this.leagues).forEach(async (key) => {
+            
+            // Using a for...of loop to await async calls
+            for (let key of Object.keys(this.leagues)) {
                 const data = await footballAPI.getUpcomingMatches(key);
-                this.displayMatches(data.matches);
+                
+                // Assuming each league has its own match data. 
+                if (data && data.matches) {
+                    allMatches = allMatches.concat(data.matches);  // Accumulate all matches
+                } else {
+                    console.error(`No matches found for league: ${key}`);
+                }
             }
-            );
+    
+            // Once all matches are fetched, display them all at once
+            this.displayMatches(allMatches);
+            
         } catch (error) {
             console.error('Error fetching matches:', error);
         }
     }
+    
 
     displayMatches(matches) {
         const container = document.getElementById('matchesContainer');
@@ -175,7 +187,8 @@ class SportsDashboard {
         
         matchCards.forEach(card => {
             const teamNames = card.querySelector('h3').textContent.toLowerCase();
-            card.style.display = teamNames.includes(searchTerm) ? 'block' : 'none';
+            const leagueName = card.querySelector('p:nth-child(2)').textContent.toLowerCase();
+            card.style.display = teamNames.includes(searchTerm) ? 'block' : leagueName.includes(searchTerm) ? 'block' : 'none';
         });
     }
 
@@ -201,13 +214,13 @@ class SportsDashboard {
             console.log(card.querySelector('p:nth-child(3)').textContent.split('Date: ')[1].split(',')[0]);
             const matchDate = this.parseDate(card.querySelector('p:nth-child(3)').textContent.split('Date: ')[1].split(',')[0]);
             const today = new Date();
+
             
             switch(timeFilter) {
-                case 'live':
-                    // Implement live match filtering
+                case 'all':
                     break;
                 case 'today':
-                    card.style.display = (matchDate === today) ? 'block' : 'none';
+                    card.style.display = (matchDate == today) ? 'block' : 'none';
                     break;
                 case 'upcoming':
                     console.log(matchDate, today, matchDate > today);
