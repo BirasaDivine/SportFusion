@@ -61,7 +61,7 @@ class FootballAPI {
     // Fetch matches for a specific league
     async getUpcomingMatches(leagueId) {
         try {
-        const data = await fetch(`https://web-01.divinebirasa.tech/foot/football-api/competitions/${leagueId}/matches`, {
+        const data = await fetch(`https://web-01.divinebirasa.tech/football-api/competitions/${leagueId}/matches`, {
             method: 'GET',
             headers: {
                 'x-auth-token': '2f648a8656184d4e867e5d8152a9427f',
