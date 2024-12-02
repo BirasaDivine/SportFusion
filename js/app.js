@@ -1,7 +1,7 @@
 class FootballAPI {
     constructor() {
         this.API_KEY = '2f648a8656184d4e867e5d8152a9427f'; 
-        this.BASE_URL = 'http://localhost:5000/football-api'; // Update base URL for new endpoint
+        this.BASE_URL = 'https://web-01.divinebirasa.tech/foot/football-api'; // Update base URL for new endpoint
         this.cache = new Map();
         
         // Configure headers for API request
@@ -61,7 +61,7 @@ class FootballAPI {
     // Fetch matches for a specific league
     async getUpcomingMatches(leagueId) {
         try {
-        const data = await fetch(`http://localhost:5000/football-api/competitions/${leagueId}/matches`, {
+        const data = await fetch(`https://web-01.divinebirasa.tech/foot/football-api/competitions/${leagueId}/matches`, {
             method: 'GET',
             headers: {
                 'x-auth-token': '2f648a8656184d4e867e5d8152a9427f',
