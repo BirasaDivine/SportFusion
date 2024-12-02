@@ -1,7 +1,7 @@
 class FootballAPI {
     constructor() {
         this.API_KEY = '2f648a8656184d4e867e5d8152a9427f'; 
-        this.BASE_URL = 'https://web-01.divinebirasa.tech/foot/football-api'; // Update base URL for new endpoint
+        this.BASE_URL = 'https://web-01.divinebirasa.tech/football-api'; // Update base URL for new endpoint
         this.cache = new Map();
         
         // Configure headers for API request
