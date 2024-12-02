@@ -1,14 +1,18 @@
-# Use the official Nginx image as the base image
-FROM nginx:alpine
+# Use the official Node.js image as the base
+FROM node:alpine
 
-# Copy the custom Nginx configuration file (optional, if customization is needed)
-# COPY nginx.conf /etc/nginx/nginx.conf
+# Set the working directory
+WORKDIR /app
 
-# Copy your HTML, CSS, and JS files to the appropriate directory
-COPY . /usr/share/nginx/html
+# Copy package files and install dependencies
+COPY package.json .
+RUN npm install
 
-# Expose port 80 to be accessible
-EXPOSE 80
+# Copy the rest of the application files
+COPY . .
 
-# Start Nginx when the container starts
-CMD ["nginx", "-g", "daemon off;"]
+# Expose the port your app uses (adjust if needed)
+EXPOSE 8080
+
+# Start the application using npm start
+CMD ["npm", "start"]
