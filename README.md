@@ -5,12 +5,13 @@
 
 ## Screenshots 📸
 
-1. **Home Page**: ![Home Page](#)
-2. **Search Results**: ![Search Results](#)
-3. **Match Details**: ![Match Details](#)
+1. **Home Page**: ![Home Page](./images/SportDataDashboard1.png)
+ 
+2. **Search Results**: ![Search Results](./images/SportDataDashboard2.png)
+
 
 ## Live Website 🌐  
-[Explore the live app here](#)
+[Explore the live app here](https://web-02.divinebirasa.tech/)
 
 ## Demo Video 🎥  
 [Watch the demo video here](#)
