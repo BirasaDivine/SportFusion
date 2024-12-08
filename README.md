@@ -14,7 +14,7 @@
 [Explore the live app here](https://web-02.divinebirasa.tech/)
 
 ## Demo Video 🎥  
-[Watch the demo video here](#)
+[Watch the demo video here](https://youtu.be/Lby0w5nedWc)
 
 ## Features ✨
 
