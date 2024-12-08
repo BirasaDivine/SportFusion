@@ -12,7 +12,7 @@ RUN npm install
 COPY . .
 
 # Expose the port your app uses (adjust if needed)
-EXPOSE 8080
+EXPOSE 5000
 
 # Start the application using npm start
 CMD ["npm", "start"]
